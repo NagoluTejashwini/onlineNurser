@@ -1,0 +1,6 @@
+com\ec\onlineplantnursery\service\PlanterServiceImplTest.class
+com\ec\onlineplantnursery\OnlineplantnurseryApplicationTests.class
+com\ec\onlineplantnursery\service\OrderServiceImplTest.class
+com\ec\onlineplantnursery\service\PlantServiceImplTest.class
+com\ec\onlineplantnursery\service\CustomerServiceImplTest.class
+com\ec\onlineplantnursery\service\SeedServiceImplTest.class

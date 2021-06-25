@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.ec.onlineplantnursery.service.PlanterServiceImplTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.571 s - in com.ec.onlineplantnursery.service.PlanterServiceImplTest
