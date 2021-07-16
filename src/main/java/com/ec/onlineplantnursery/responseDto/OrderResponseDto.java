@@ -1,19 +1,22 @@
 package com.ec.onlineplantnursery.responseDto;
 
-import java.util.List;
 
+import java.util.Map;
 
 import com.ec.onlineplantnursery.entity.Address;
-import com.ec.onlineplantnursery.entity.Planter;
-
 public class OrderResponseDto {
 
 	private Integer bookingOrderId;
-	private int quantity;
+	
 	private double totalCost;
-	private String customerName;
-	private Address address;
-	private List<Planter> planterIds;
+	
+	private Map<Integer, Integer> productIds;
+	
+	private String email;
+	
+	/*
+	 * private String customerName; private Address address;
+	 */
 
 	public OrderResponseDto() {
 		super();
@@ -28,14 +31,6 @@ public class OrderResponseDto {
 		this.bookingOrderId = bookingOrderId;
 	}
 
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
 	public double getTotalCost() {
 		return totalCost;
 	}
@@ -44,28 +39,33 @@ public class OrderResponseDto {
 		this.totalCost = totalCost;
 	}
 
-	public String getCustomerName() {
-		return customerName;
+	
+	/*
+	 * public String getCustomerName() { return customerName; }
+	 * 
+	 * public void setCustomerName(String customerName) { this.customerName =
+	 * customerName; }
+	 * 
+	 * public Address getAddress() { return address; }
+	 * 
+	 * public void setAddress(Address address) { this.address = address; }
+	 */
+	 
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public Address getAddress() {
-		return address;
+	public Map<Integer, Integer> getProductIds() {
+		return productIds;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setProductIds(Map<Integer, Integer> productIds) {
+		this.productIds = productIds;
 	}
-
-	public List<Planter> getPlanterIds() {
-		return planterIds;
-	}
-
-	public void setPlanterIds(List<Planter> planterIds) {
-		this.planterIds = planterIds;
-	}
-
+	
+	
 }

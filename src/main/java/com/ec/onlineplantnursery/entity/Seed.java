@@ -1,25 +1,18 @@
 package com.ec.onlineplantnursery.entity;
-
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+
 import io.swagger.annotations.ApiModelProperty;
-
-
 @Entity
 @Table(name = "seed")
-@DiscriminatorValue("seed")
+//@DiscriminatorValue("seed")
 public class Seed extends Product{
 	
-	@ApiModelProperty(name = "SeedName", value = "Hold the min 3 char seed name", required = true)
-	@NotEmpty(message = "Seed Name cannot be left blank or null")
-	@Size(min = 3, max = 15, message = "Invalid Seed Name, Seed Name should have minimum 3 and maximum 15 characters")
-	@Column(unique = true)
-	private String commonName;
 
 	@ApiModelProperty(name = "Bloom Time", value = "Hold the min 3 char bloom time", required = true)
 	@NotEmpty(message = "bloom time cannot be left blank or null")
@@ -50,10 +43,6 @@ public class Seed extends Product{
 	@Positive(message = "Stock should be positive")
 	private Integer seedsStock;
 
-	@ApiModelProperty(name = "SeedCost", value = "Holds only positive value")
-	@Positive(message = "Cost should be positive")
-	private double seedsCost;
-
 	@ApiModelProperty(name = "SeedsPerPacket", value = "Holds only positive value")
 	@Positive(message = "SeedsPerPacket should be positive")
 	private Integer seedsPerPacket;
@@ -63,7 +52,12 @@ public class Seed extends Product{
 
 	}
 
-	public Seed(int pId,
+	public Seed(int pId, double cost,String commonName) {
+		super(pId, cost,commonName);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Seed(
 			@NotEmpty(message = "Seed Name cannot be left blank or null") @Size(min = 3, max = 15, message = "Invalid Seed Name, Seed Name should have minimum 3 and maximum 15 characters") String commonName,
 			@NotEmpty(message = "bloom time cannot be left blank or null") @Size(min = 3, max = 15, message = "Invalid bloom time, bloom time should have minimum 3 and maximum 15 characters") String bloomTime,
 			@NotEmpty(message = "watering cannot be left blank or null") String watering,
@@ -74,8 +68,7 @@ public class Seed extends Product{
 			@Positive(message = "Stock should be positive") Integer seedsStock,
 			@Positive(message = "Cost should be positive") double seedsCost,
 			@Positive(message = "SeedsPerPacket should be positive") Integer seedsPerPacket) {
-		super(pId);
-		this.commonName = commonName;
+		super();
 		this.bloomTime = bloomTime;
 		this.watering = watering;
 		this.difficultyLevel = difficultyLevel;
@@ -83,19 +76,10 @@ public class Seed extends Product{
 		this.typeOfSeeds = typeOfSeeds;
 		this.seedsDescription = seedsDescription;
 		this.seedsStock = seedsStock;
-		this.seedsCost = seedsCost;
+		
 		this.seedsPerPacket = seedsPerPacket;
 	}
 
-	
-
-	public String getCommonName() {
-		return commonName;
-	}
-
-	public void setCommonName(String commonName) {
-		this.commonName = commonName;
-	}
 
 	public String getBloomTime() {
 		return bloomTime;
@@ -153,13 +137,7 @@ public class Seed extends Product{
 		this.seedsStock = seedsStock;
 	}
 
-	public double getSeedsCost() {
-		return seedsCost;
-	}
-
-	public void setSeedsCost(double seedsCost) {
-		this.seedsCost = seedsCost;
-	}
+	
 
 	public Integer getSeedsPerPacket() {
 		return seedsPerPacket;
@@ -172,14 +150,9 @@ public class Seed extends Product{
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((bloomTime == null) ? 0 : bloomTime.hashCode());
-		result = prime * result + ((commonName == null) ? 0 : commonName.hashCode());
 		result = prime * result + ((difficultyLevel == null) ? 0 : difficultyLevel.hashCode());
-	
-		long temp;
-		temp = Double.doubleToLongBits(seedsCost);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((seedsDescription == null) ? 0 : seedsDescription.hashCode());
 		result = prime * result + ((seedsPerPacket == null) ? 0 : seedsPerPacket.hashCode());
 		result = prime * result + ((seedsStock == null) ? 0 : seedsStock.hashCode());
@@ -193,7 +166,7 @@ public class Seed extends Product{
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -203,18 +176,11 @@ public class Seed extends Product{
 				return false;
 		} else if (!bloomTime.equals(other.bloomTime))
 			return false;
-		if (commonName == null) {
-			if (other.commonName != null)
-				return false;
-		} else if (!commonName.equals(other.commonName))
-			return false;
+		
 		if (difficultyLevel == null) {
 			if (other.difficultyLevel != null)
 				return false;
 		} else if (!difficultyLevel.equals(other.difficultyLevel))
-			return false;
-		
-		if (Double.doubleToLongBits(seedsCost) != Double.doubleToLongBits(other.seedsCost))
 			return false;
 		if (seedsDescription == null) {
 			if (other.seedsDescription != null)
@@ -251,10 +217,13 @@ public class Seed extends Product{
 
 	@Override
 	public String toString() {
-		return "Seed [ commonName=" + commonName + ", bloomTime=" + bloomTime + ", watering="
-				+ watering + ", difficultyLevel=" + difficultyLevel + ", temparature=" + temparature + ", typeOfSeeds="
-				+ typeOfSeeds + ", seedsDescription=" + seedsDescription + ", seedsStock=" + seedsStock + ", seedsCost="
-				+ seedsCost + ", seedsPerPacket=" + seedsPerPacket + "]";
+		return "Seed [commonName=" + getCommonName() + ", bloomTime=" + bloomTime + ", watering=" + watering
+				+ ", difficultyLevel=" + difficultyLevel + ", temparature=" + temparature + ", typeOfSeeds="
+				+ typeOfSeeds + ", seedsDescription=" + seedsDescription + ", seedsStock=" + seedsStock
+				+ ", cost =" + getCost() + ", seedsPerPacket=" + seedsPerPacket + "]";
 	}
 
+	
+
+	
 }

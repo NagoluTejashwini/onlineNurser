@@ -1,8 +1,13 @@
 package com.ec.onlineplantnursery.web;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Blob;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.zip.Deflater;
 
 import javax.validation.Valid;
 
@@ -11,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +28,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ec.onlineplantnursery.exceptions.ResourceNotFoundException;
 import com.ec.onlineplantnursery.exceptions.SeedIdNotFoundException;
@@ -30,6 +38,7 @@ import com.ec.onlineplantnursery.requestDto.SeedRequestDto;
 import com.ec.onlineplantnursery.responseDto.SeedResponseDto;
 import com.ec.onlineplantnursery.entity.Seed;
 import com.ec.onlineplantnursery.service.ISeedServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,6 +56,9 @@ public class SeedRestController {
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private ObjectMapper  objectMapper;
 
 	/*
 	 * Method Name:insertSeed 
@@ -55,15 +67,18 @@ public class SeedRestController {
 	 * Author Name:Nagolu Tejashwini 
 	 * Created Date: 21/05/2021
 	 */
-
+//consumes= {MediaType.APPLICATION_JSON_VALUE,consumes = {"multipart/form-data"}
+	//MediaType.MULTIPART_FORM_DATA_VALUE}
 	@ApiOperation(value = "seed post mapping", response = SeedResponseDto.class)
-	@PostMapping("/add")
-	public ResponseEntity<SeedResponseDto> insertSeed(@RequestBody @Valid SeedRequestDto seedDto) {
+	@PostMapping(value="/add")
+	public ResponseEntity<SeedResponseDto> insertSeed(@RequestBody @Valid SeedRequestDto seedDto )  {
 
 		log.info("insert seed");
-		Seed seed = modelMapper.map(seedDto, Seed.class);
-		Seed seed1 = seedService.addSeed(seed);
-		SeedResponseDto seedResponse = modelMapper.map(seed1, SeedResponseDto.class);
+		System.out.println("-----addSeed");
+		SeedRequestDto seedRequestDto = modelMapper.map(seedDto, SeedRequestDto.class);
+		Seed seed1 = modelMapper.map(seedRequestDto, Seed.class);
+		Seed seed2 = seedService.addSeed(seed1);
+		SeedResponseDto seedResponse = modelMapper.map(seed2, SeedResponseDto.class);
 
 		return new ResponseEntity<>(seedResponse, HttpStatus.CREATED);
 	}
@@ -197,7 +212,39 @@ public class SeedRestController {
 	}
 	
 
-	
+	 public static byte[] compressBytes(byte[] data) {
+		 
+		         Deflater deflater = new Deflater();
+		 
+		         deflater.setInput(data);
+		
+		         deflater.finish();
+		 
+		         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+		 
+		         byte[] buffer = new byte[1024];
+		 
+		         while (!deflater.finished()) {
+		 
+		             int count = deflater.deflate(buffer);
+		 
+		             outputStream.write(buffer, 0, count);
+		 
+		         }
+		 
+		         try {
+		 
+		             outputStream.close();
+		 
+		         } catch (IOException e) {
+		
+		         }
+		
+		         System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
+		 
+		         return outputStream.toByteArray();
+		
+		     }
 
 	
 	

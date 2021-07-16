@@ -1,14 +1,9 @@
 package com.ec.onlineplantnursery.entity;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -20,7 +15,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "plant")
-@DiscriminatorValue("plant")
+//@DiscriminatorValue("plant")
 public class Plant extends Product{
 	
 
@@ -31,10 +26,6 @@ public class Plant extends Product{
 	@Size(min = 3, max = 15, message = "Invalid Plant spread")
 	private String plantSpread;
 
-	@Column(unique = true)
-	@NotEmpty(message = "Plant Name cannot be blank")
-	@Size(min = 3, max = 15, message = "Invalid Plant Name")
-	private String commonName;
 
 	@ApiModelProperty(name = "Bloom Time", value = "Hold the min 3 char bloom time", required = true)
 	@NotEmpty(message = "bloom time cannot be left blank or null")
@@ -63,21 +54,31 @@ public class Plant extends Product{
 	@Positive(message = "Stock should be positive")
 	private Integer plantsStock;
 
-	@Positive(message = "Enter valid cost")
-	private double plantCost;
 
 	public Plant() {
 		super();
 
 	}
 
-	public Plant(int pId, Integer plantHeight, Integer plantsStock, String commonName, String bloomTime,
-			String medicinalOrCulinaryUse, String difficultyLevel, String temparature, String typeOfPlant,
-			String plantDescription, String plantSpread, double plantCost) {
-		super(pId);
+	public Plant(int pId, double cost,String commonName) {
+		super(pId, cost,commonName);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Plant(@Positive(message = "Height of plant should be positive") Integer plantHeight,
+			@NotEmpty(message = "Plant spread cannot be blank") @Size(min = 3, max = 15, message = "Invalid Plant spread") String plantSpread,
+			@NotEmpty(message = "Plant Name cannot be blank") @Size(min = 3, max = 15, message = "Invalid Plant Name") String commonName,
+			@NotEmpty(message = "bloom time cannot be left blank or null") @Size(min = 3, max = 15, message = "Invalid bloom time, bloom time should have minimum 3 and maximum 15 characters") String bloomTime,
+			String medicinalOrCulinaryUse,
+			@NotEmpty(message = "difficulty level cannot be left blank or null") String difficultyLevel,
+			@NotEmpty(message = "Temperature cannot be left blank or null") String temparature,
+			@NotNull String typeOfPlant,
+			@NotEmpty(message = "plant description cannot be left blank or null") String plantDescription,
+			@Positive(message = "Stock should be positive") Integer plantsStock,
+			@Positive(message = "Enter valid cost") double plantCost) {
+		super();
 		this.plantHeight = plantHeight;
 		this.plantSpread = plantSpread;
-		this.commonName = commonName;
 		this.bloomTime = bloomTime;
 		this.medicinalOrCulinaryUse = medicinalOrCulinaryUse;
 		this.difficultyLevel = difficultyLevel;
@@ -85,9 +86,8 @@ public class Plant extends Product{
 		this.typeOfPlant = typeOfPlant;
 		this.plantDescription = plantDescription;
 		this.plantsStock = plantsStock;
-		this.plantCost = plantCost;
+		
 	}
-
 
 	public Integer getPlantHeight() {
 		return plantHeight;
@@ -103,14 +103,6 @@ public class Plant extends Product{
 
 	public void setPlantSpread(String plantSpread) {
 		this.plantSpread = plantSpread;
-	}
-
-	public String getCommonName() {
-		return commonName;
-	}
-
-	public void setCommonName(String commonName) {
-		this.commonName = commonName;
 	}
 
 	public String getBloomTime() {
@@ -169,25 +161,13 @@ public class Plant extends Product{
 		this.plantsStock = plantsStock;
 	}
 
-	public double getPlantCost() {
-		return plantCost;
-	}
-
-	public void setPlantCost(double plantCost) {
-		this.plantCost = plantCost;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((bloomTime == null) ? 0 : bloomTime.hashCode());
-		result = prime * result + ((commonName == null) ? 0 : commonName.hashCode());
 		result = prime * result + ((difficultyLevel == null) ? 0 : difficultyLevel.hashCode());
 		result = prime * result + ((medicinalOrCulinaryUse == null) ? 0 : medicinalOrCulinaryUse.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(plantCost);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((plantDescription == null) ? 0 : plantDescription.hashCode());
 		result = prime * result + ((plantHeight == null) ? 0 : plantHeight.hashCode());
 		result = prime * result + ((plantSpread == null) ? 0 : plantSpread.hashCode());
@@ -201,7 +181,7 @@ public class Plant extends Product{
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -210,11 +190,6 @@ public class Plant extends Product{
 			if (other.bloomTime != null)
 				return false;
 		} else if (!bloomTime.equals(other.bloomTime))
-			return false;
-		if (commonName == null) {
-			if (other.commonName != null)
-				return false;
-		} else if (!commonName.equals(other.commonName))
 			return false;
 		if (difficultyLevel == null) {
 			if (other.difficultyLevel != null)
@@ -225,8 +200,6 @@ public class Plant extends Product{
 			if (other.medicinalOrCulinaryUse != null)
 				return false;
 		} else if (!medicinalOrCulinaryUse.equals(other.medicinalOrCulinaryUse))
-			return false;
-		if (Double.doubleToLongBits(plantCost) != Double.doubleToLongBits(other.plantCost))
 			return false;
 		if (plantDescription == null) {
 			if (other.plantDescription != null)
@@ -263,11 +236,14 @@ public class Plant extends Product{
 
 	@Override
 	public String toString() {
-		return "Plant [plantHeight=" + plantHeight + ", plantSpread=" + plantSpread
-				+ ", commonName=" + commonName + ", bloomTime=" + bloomTime + ", medicinalOrCulinaryUse="
-				+ medicinalOrCulinaryUse + ", difficultyLevel=" + difficultyLevel + ", temparature=" + temparature
-				+ ", typeOfPlant=" + typeOfPlant + ", plantDescription=" + plantDescription + ", plantsStock="
-				+ plantsStock + ", plantCost=" + plantCost + "]";
+		return "Plant [plantHeight=" + plantHeight + ", plantSpread=" + plantSpread + ", commonName=" + getCommonName()
+				+ ", bloomTime=" + bloomTime + ", medicinalOrCulinaryUse=" + medicinalOrCulinaryUse
+				+ ", difficultyLevel=" + difficultyLevel + ", temparature=" + temparature + ", typeOfPlant="
+				+ typeOfPlant + ", plantDescription=" + plantDescription + ", plantsStock=" + plantsStock + "]";
 	}
+
+	
+
+	
 
 }

@@ -1,5 +1,7 @@
 package com.ec.onlineplantnursery.responseDto;
 
+import java.util.Arrays;
+
 import com.ec.onlineplantnursery.entity.Product;
 
 public class SeedResponseDto {
@@ -13,9 +15,10 @@ public class SeedResponseDto {
 	private String typeOfSeeds;
 	private String seedsDescription;
 	private Integer seedsStock;
-	private double seedsCost;
+	private double cost;
 	private Integer seedsPerPacket;
-
+	
+	
 	public SeedResponseDto() {
 		super();
 
@@ -98,13 +101,16 @@ public class SeedResponseDto {
 		this.seedsStock = seedsStock;
 	}
 
-	public double getSeedsCost() {
-		return seedsCost;
+	
+	public double getCost() {
+		return cost;
 	}
 
-	public void setSeedsCost(double seedsCost) {
-		this.seedsCost = seedsCost;
+
+	public void setCost(double cost) {
+		this.cost = cost;
 	}
+
 
 	public Integer getSeedsPerPacket() {
 		return seedsPerPacket;
@@ -115,14 +121,16 @@ public class SeedResponseDto {
 	}
 
 
+	
 
 	@Override
 	public String toString() {
 		return "SeedResponseDto [pId=" + pId + ", commonName=" + commonName + ", bloomTime=" + bloomTime + ", watering="
 				+ watering + ", difficultyLevel=" + difficultyLevel + ", temparature=" + temparature + ", typeOfSeeds="
 				+ typeOfSeeds + ", seedsDescription=" + seedsDescription + ", seedsStock=" + seedsStock + ", seedsCost="
-				+ seedsCost + ", seedsPerPacket=" + seedsPerPacket + "]";
+				+ cost + ", seedsPerPacket=" + seedsPerPacket + "]";
 	}
+
 
 
 

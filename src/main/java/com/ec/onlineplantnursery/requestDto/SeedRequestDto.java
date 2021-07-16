@@ -1,5 +1,7 @@
 package com.ec.onlineplantnursery.requestDto;
 
+import java.util.Arrays;
+
 import javax.persistence.Column;
 
 import javax.validation.constraints.NotEmpty;
@@ -17,10 +19,7 @@ public class SeedRequestDto {
 	private int pId;
 	
 	
-	@ApiModelProperty(name = "SeedName", value = "Hold the min 3 char seed name", required = true)
-	@NotEmpty(message = "Seed Name cannot be left blank or null")
-	@Size(min = 3, max = 15, message = "Invalid Seed Name, Seed Name should have minimum 3 and maximum 15 characters")
-	@Column(unique = true)
+	
 	private String commonName;
 
 	@ApiModelProperty(name = "Bloom Time", value = "Hold the min 3 char bloom time", required = true)
@@ -52,21 +51,21 @@ public class SeedRequestDto {
 	@Positive(message = "Stock should be positive")
 	private Integer seedsStock;
 
-	@ApiModelProperty(name = "SeedCost", value = "Holds only positive value")
-	@Positive(message = "Cost should be positive")
-	private double seedsCost;
+	
+	private double cost;
 
 	@ApiModelProperty(name = "SeedsPerPacket", value = "Holds only positive value")
 	@Positive(message = "SeedsPerPacket should be positive")
 	private Integer seedsPerPacket;
 
+	
 	public SeedRequestDto() {
 		super();
 
 	}
 
 	public SeedRequestDto(int pId,
-			@NotEmpty(message = "Seed Name cannot be left blank or null") @Size(min = 3, max = 15, message = "Invalid Seed Name, Seed Name should have minimum 3 and maximum 15 characters") String commonName,
+			String commonName,
 			@NotEmpty(message = "bloom time cannot be left blank or null") @Size(min = 3, max = 15, message = "Invalid bloom time, bloom time should have minimum 3 and maximum 15 characters") String bloomTime,
 			@NotEmpty(message = "watering cannot be left blank or null") String watering,
 			@NotEmpty(message = "difficulty level cannot be left blank or null") String difficultyLevel,
@@ -74,7 +73,7 @@ public class SeedRequestDto {
 			@NotEmpty(message = "Type of seeds cannot be left blank or null") String typeOfSeeds,
 			@NotEmpty(message = "seeds description cannot be left blank or null") String seedsDescription,
 			@Positive(message = "Stock should be positive") Integer seedsStock,
-			@Positive(message = "Cost should be positive") double seedsCost,
+			 double cost,
 			@Positive(message = "SeedsPerPacket should be positive") Integer seedsPerPacket) {
 		this.pId=pId;
 		this.commonName = commonName;
@@ -85,9 +84,11 @@ public class SeedRequestDto {
 		this.typeOfSeeds = typeOfSeeds;
 		this.seedsDescription = seedsDescription;
 		this.seedsStock = seedsStock;
-		this.seedsCost = seedsCost;
+		this.cost = cost;
 		this.seedsPerPacket = seedsPerPacket;
+		
 	}
+	
 
 	
 
@@ -163,12 +164,14 @@ public class SeedRequestDto {
 		this.seedsStock = seedsStock;
 	}
 
-	public double getSeedsCost() {
-		return seedsCost;
+	
+
+	public double getCost() {
+		return cost;
 	}
 
-	public void setSeedsCost(double seedsCost) {
-		this.seedsCost = seedsCost;
+	public void setCost(double cost) {
+		this.cost = cost;
 	}
 
 	public Integer getSeedsPerPacket() {
@@ -179,13 +182,17 @@ public class SeedRequestDto {
 		this.seedsPerPacket = seedsPerPacket;
 	}
 
+	
+
 	@Override
 	public String toString() {
 		return "SeedRequestDto [pId=" + pId + ", commonName=" + commonName + ", bloomTime=" + bloomTime + ", watering="
 				+ watering + ", difficultyLevel=" + difficultyLevel + ", temparature=" + temparature + ", typeOfSeeds="
 				+ typeOfSeeds + ", seedsDescription=" + seedsDescription + ", seedsStock=" + seedsStock + ", seedsCost="
-				+ seedsCost + ", seedsPerPacket=" + seedsPerPacket + "]";
+				+ cost + ", seedsPerPacket=" + seedsPerPacket +  "]";
 	}
+
+	
 
 	
 }

@@ -1,6 +1,7 @@
 package com.ec.onlineplantnursery.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -9,14 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ec.onlineplantnursery.entity.Customer;
-import com.ec.onlineplantnursery.repository.ICustomerRepository;
 import com.ec.onlineplantnursery.exceptions.ResourceNotFoundException;
+import com.ec.onlineplantnursery.repository.ICustomerRepository;
 
 @Service
 public class ICustomerServiceImpl implements ICustomerService{
 	
 	@Autowired
 	private ICustomerRepository custRepo;
+	
+	
 	
 	public ICustomerServiceImpl() {
 		super();
@@ -36,8 +39,13 @@ public class ICustomerServiceImpl implements ICustomerService{
 	@Override
 	@Transactional
 	public Customer addCustomer(Customer customer) {
+		customer.setUserType("1");
+		Optional<Customer> cust = custRepo.findById(customer.getUserId());
+		if(cust.isEmpty()) {
 		custRepo.save(customer);
 		return customer;
+		}
+		return null;
 	}
 	
 	
@@ -51,7 +59,7 @@ public class ICustomerServiceImpl implements ICustomerService{
 	@Transactional
 	public Customer updateCustomer(Customer tenant) throws ResourceNotFoundException{
 		
-		Optional<Customer> updatedCustomer = custRepo.findById(tenant.getCustomerId());
+		Optional<Customer> updatedCustomer = custRepo.findById(tenant.getUserId());
 
 		if(updatedCustomer.isPresent()) {
 			
@@ -73,7 +81,8 @@ public class ICustomerServiceImpl implements ICustomerService{
 	public Customer deleteCustomer(Customer customer) throws ResourceNotFoundException{
 		
 		
-		Optional<Customer> deletedCustomer = custRepo.findById(customer.getCustomerId());
+		Optional<Customer> deletedCustomer = custRepo.findById(customer.getUserId());
+		System.out.println(deletedCustomer);
 		if(deletedCustomer.isPresent()) {
 			custRepo.delete(customer);
 		}

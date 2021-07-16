@@ -2,14 +2,12 @@ package com.ec.onlineplantnursery.requestDto;
 
 import java.time.LocalDate;
 
-import java.util.List;
-
+import java.util.Map;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
 
 import com.ec.onlineplantnursery.entity.Customer;
-import com.ec.onlineplantnursery.entity.Planter;
+import com.ec.onlineplantnursery.entity.User;
 
 import lombok.Data;
 
@@ -24,14 +22,17 @@ public class OrderRequestDTO {
 	@NotEmpty(message = "transactionMode cannot be left blank or null")
 	private String transactionMode;
 
-	@Positive(message = "quantity should be positive")
-	private int quantity;
+	
+	
+	
 
 	private double totalCost;
 
-	private Customer customer;
+	//private Customer customer;
 
-	private List<Planter> planters;
+	private Map<Integer, Integer> productQuantityMap;
+	
+	private User user;
 
 	public OrderRequestDTO() {
 		super();
@@ -62,14 +63,6 @@ public class OrderRequestDTO {
 		this.transactionMode = transactionMode;
 	}
 
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
 	public double getTotalCost() {
 		return totalCost;
 	}
@@ -78,20 +71,28 @@ public class OrderRequestDTO {
 		this.totalCost = totalCost;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	/*
+	 * public Customer getCustomer() { return customer; }
+	 * 
+	 * public void setCustomer(Customer customer) { this.customer = customer; }
+	 */
+
+	public Map<Integer, Integer> getProductQuantityMap() {
+		return productQuantityMap;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setProductQuantityMap(Map<Integer, Integer> productQuantityMap) {
+		this.productQuantityMap = productQuantityMap;
 	}
 
-	public List<Planter> getPlanters() {
-		return planters;
+	public User getUser() {
+		return user;
 	}
 
-	public void setPlanters(List<Planter> planters) {
-		this.planters = planters;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
+	
+	
 }
